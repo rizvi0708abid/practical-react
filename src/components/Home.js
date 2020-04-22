@@ -45,13 +45,6 @@ class Home extends React.Component {
     }
   };
 
-  product = (x) => {
-    return x === undefined ? (
-      <Skeleton variant="text" width={210} height={118} />
-    ) : (
-      <ProductCard prodDetails={x} />
-    );
-  };
   render() {
     let { products = [], loading, pageNumber } = this.props.products;
     return !loading ? (
@@ -64,7 +57,13 @@ class Home extends React.Component {
             justifyContent: "space-between",
           }}
         >
-          {products.map(this.product)}
+          {products.map((product) => {
+            return product === undefined ? (
+              <Skeleton variant="text" width={210} height={118} />
+            ) : (
+              <ProductCard key={product.productId} prodDetails={product} />
+            );
+          })}
         </Grid>
         <div
           style={{

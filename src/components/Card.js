@@ -11,6 +11,8 @@ import { red } from "@material-ui/core/colors";
 import Rating from "@material-ui/lab/Rating";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
+import { Link } from "react-router-dom";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "56.25%",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -46,6 +48,7 @@ const cardStyle = {
 export default function ProductCard(props) {
   const classes = useStyles();
   const {
+    productId,
     productImage,
     productName,
     shortDescription,
@@ -58,18 +61,21 @@ export default function ProductCard(props) {
   return (
     <Grid item xs={12} sm={4}>
       <Card style={cardStyle} className={classes.root}>
-        <CardHeader
-          avatar={
-            <Avatar aria-label="recipe" className={classes.avatar}>
-              {productName.substring(0, 2)}
-            </Avatar>
-          }
-          title={props.prodDetails.productName}
-        />
-        <CardMedia
-          className={classes.media}
-          image={`https://mobile-tha-server-8ba57.firebaseapp.com${productImage}`}
-        />
+        <MoreHorizIcon style={{ marginLeft: 230 }} />
+        <Link to={`/home/${productId}`} style={{ textDecoration: "none" }}>
+          <CardHeader
+            avatar={
+              <Avatar aria-label="recipe" className={classes.avatar}>
+                {productName.substring(0, 2)}
+              </Avatar>
+            }
+            title={props.prodDetails.productName}
+          />
+          <CardMedia
+            className={classes.media}
+            image={`https://mobile-tha-server-8ba57.firebaseapp.com${productImage}`}
+          />
+        </Link>
         <CardContent>
           <div
             style={{
