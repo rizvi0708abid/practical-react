@@ -7,6 +7,7 @@ import ProductCard from "./Card";
 import Grid from "@material-ui/core/Grid";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { Button } from "@material-ui/core";
+import ProductForm from "./ProductForm";
 
 class Home extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Home extends React.Component {
     this.state = {
       activePrev: false,
       pageNumber: 1,
+      showForm: false,
     };
   }
   componentDidMount() {
@@ -45,10 +47,16 @@ class Home extends React.Component {
     }
   };
 
+  myCallBack = (dataFromChild) => {
+    console.log("dataFromChild......", dataFromChild);
+    this.setState({ showForm: dataFromChild });
+  };
+
   render() {
     let { products = [], loading, pageNumber } = this.props.products;
     return !loading ? (
       <div style={{ padding: 100 }}>
+        {this.state.showForm ? <ProductForm /> : null}
         <Grid
           container
           spacing={1}
@@ -61,7 +69,11 @@ class Home extends React.Component {
             return product === undefined ? (
               <Skeleton variant="text" width={210} height={118} />
             ) : (
-              <ProductCard key={product.productId} prodDetails={product} />
+              <ProductCard
+                key={product.productId}
+                prodDetails={product}
+                callBack={this.myCallBack}
+              />
             );
           })}
         </Grid>

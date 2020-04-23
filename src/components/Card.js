@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -13,6 +13,20 @@ import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import ProductForm from "./ProductForm";
+import { Modal } from "@material-ui/core";
+
+const modal = {
+  width: 600,
+  height: 400,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "white",
+  marginLeft: "30%",
+  marginTop: "10%",
+  backgroundColor: "white",
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +61,7 @@ const cardStyle = {
 
 export default function ProductCard(props) {
   const classes = useStyles();
+  const [showForm, setShowForm] = useState(false);
   const {
     productId,
     productImage,
@@ -57,11 +72,26 @@ export default function ProductCard(props) {
     price,
     inStock,
   } = props.prodDetails;
+  console.log("ProductCard....::", props);
 
-  return (
+  const handler = () => {
+    setShowForm(false);
+  };
+
+  return showForm ? (
+    <Modal open={showForm} style={modal}>
+      <ProductForm id={productId} showFormHandler={handler} />
+    </Modal>
+  ) : (
     <Grid item xs={12} sm={4}>
       <Card style={cardStyle} className={classes.root}>
-        <MoreHorizIcon style={{ marginLeft: 230 }} />
+        <MoreHorizIcon
+          style={{ marginLeft: 230 }}
+          onClick={() => {
+            setShowForm(!showForm);
+          }}
+        />
+
         <Link to={`/home/${productId}`} style={{ textDecoration: "none" }}>
           <CardHeader
             avatar={
