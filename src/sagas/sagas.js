@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import { fetchProductsfromApi, fetchSearchedProductsfromApi } from "../api";
 import {
   RECEIVE_PRODUCTS,
@@ -31,7 +31,7 @@ function* fetchSearchedProducts(action) {
       fetchSearchedProductsfromApi,
       action.payload.pageNumber,
       action.payload.pageSize,
-      action.payload.searchText
+      action.payload.search
     );
     yield put({ type: RECEIVE_SEARCHED_PRODUCTS, products: products });
     console.log("searched products recieved ...", products);
@@ -41,6 +41,6 @@ function* fetchSearchedProducts(action) {
 }
 
 export default function* mySaga() {
-  yield takeEvery(REQUEST_PRODUCTS, fetchProducts);
-  yield takeEvery(REQUEST_SEARCHED_PRODUCTS, fetchSearchedProducts);
+  yield takeLatest(REQUEST_PRODUCTS, fetchProducts);
+  yield takeLatest(REQUEST_SEARCHED_PRODUCTS, fetchSearchedProducts);
 }

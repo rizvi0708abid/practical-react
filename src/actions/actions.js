@@ -50,11 +50,11 @@ export const requestLogout = () => {
   };
 };
 
-export const requestSearchedProducts = (pageNumber, pageSize, searchText) => {
-  console.log("Inside requestProducts searchtext", searchText);
+export const requestSearchedProducts = (pageNumber, pageSize, search) => {
+  console.log("Inside requestProducts searchtext", search);
   return {
     type: REQUEST_SEARCHED_PRODUCTS,
-    payload: { pageNumber, pageSize, searchText },
+    payload: { pageNumber, pageSize, search },
   };
 };
 

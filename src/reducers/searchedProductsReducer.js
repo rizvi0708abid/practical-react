@@ -18,10 +18,10 @@ export default (
     case REQUEST_SEARCHED_PRODUCTS:
       return {
         ...state,
-        loading: true,
         pageNumber: action.payload.pageNumber,
         pageSize: action.payload.pageSize,
-        search: action.payload.searchText,
+        search: action.payload.search,
+        loading: true,
         error: null,
       };
     case RECEIVE_SEARCHED_PRODUCTS:
