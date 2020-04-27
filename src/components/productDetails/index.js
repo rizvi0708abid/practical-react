@@ -6,9 +6,10 @@ import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { connect } from "react-redux";
-import OutOfStock from "../../src/images/outOfStock.jpeg";
 import _ from "lodash";
 import { Link } from "react-router-dom";
+
+import OutOfStock from "../../../src/images/outOfStock.jpeg";
 
 const listStyle = {
   listStyleType: "none",
@@ -121,7 +122,7 @@ function ProductDetails({ product, history }) {
         </Grid>
         <button
           style={{ marginLeft: 385 }}
-          onClick={() => history.push("/home")}
+          onClick={() => history.push("/app/products")}
         >{`<<Back`}</button>
       </Paper>
     </div>

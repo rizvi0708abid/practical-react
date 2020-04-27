@@ -2,12 +2,14 @@ import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { requestProducts } from "../actions/actions";
-import ProductCard from "./Card";
+import { requestProducts } from "../../actions/actions";
 import Grid from "@material-ui/core/Grid";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { Button } from "@material-ui/core";
-import ProductForm from "./ProductForm";
+
+import ProductForm from "../productForm";
+import ProductCard from "../card";
+import Header from "../header";
 
 class Home extends React.Component {
   constructor(props) {
@@ -54,56 +56,60 @@ class Home extends React.Component {
 
   render() {
     let { products = [], loading, pageNumber } = this.props.products;
+
     return !loading ? (
-      <div style={{ padding: 100 }}>
-        {this.state.showForm ? <ProductForm /> : null}
-        <Grid
-          container
-          spacing={1}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          {products.map((product) => {
-            return product === undefined ? (
-              <Skeleton variant="text" width={210} height={118} />
-            ) : (
-              <ProductCard
-                key={product.productId}
-                prodDetails={product}
-                callBack={this.myCallBack}
-              />
-            );
-          })}
-        </Grid>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: 40,
-          }}
-        >
-          <Button
-            onClick={this.handlePrev}
-            variant="contained"
-            color="primary"
-            disabled={this.state.activePrev}
-            style={{ marginLeft: 10 }}
+      <div>
+        <Header />
+        <div style={{ padding: 100 }}>
+          {this.state.showForm ? <ProductForm /> : null}
+          <Grid
+            container
+            spacing={1}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
           >
-            {`<< Prev`}
-          </Button>
-          <strong style={{ textDecoration: "underline" }}>
-            {pageNumber > 0 ? pageNumber : null}
-          </strong>
-          <Button
-            onClick={this.handleNext}
-            variant="contained"
-            color="primary"
-            style={{ marginRight: 90 }}
+            {products.map((product) => {
+              return product === undefined ? (
+                <Skeleton variant="text" width={210} height={118} />
+              ) : (
+                <ProductCard
+                  key={product.productId}
+                  prodDetails={product}
+                  callBack={this.myCallBack}
+                />
+              );
+            })}
+          </Grid>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 40,
+            }}
           >
-            {`Next >>`}
-          </Button>
+            <Button
+              onClick={this.handlePrev}
+              variant="contained"
+              color="primary"
+              disabled={this.state.activePrev}
+              style={{ marginLeft: 10 }}
+            >
+              {`<< Prev`}
+            </Button>
+            <strong style={{ textDecoration: "underline" }}>
+              {pageNumber > 0 ? pageNumber : null}
+            </strong>
+            <Button
+              onClick={this.handleNext}
+              variant="contained"
+              color="primary"
+              style={{ marginRight: 90 }}
+            >
+              {`Next >>`}
+            </Button>
+          </div>
         </div>
       </div>
     ) : (

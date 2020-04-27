@@ -1,14 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import LoginPage from "./components/loginPage";
+import ContactUs from "./components/contactUs";
+import ProductDetails from "./components/productDetails";
+import Home from "./components/home";
+
+import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import ProtectedRoutes from "./components/protectedRroutes";
+import { Provider } from "react-redux";
+import store from "./store";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Switch>
+        <Provider store={store}>
+          <Route exact path="/" component={LoginPage} />
+          <ProtectedRoutes exact path="/app" component={App} />
+          <ProtectedRoutes exact path="/app/products" component={Home} />
+          <ProtectedRoutes
+            exact
+            path="/app/products/:id"
+            component={ProductDetails}
+          />
+          <ProtectedRoutes exact path="/app/contactUs" component={ContactUs} />
+        </Provider>
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

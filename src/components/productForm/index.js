@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-//import { input, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import _ from "lodash";
 

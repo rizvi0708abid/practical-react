@@ -1,8 +1,10 @@
 import React from "react";
+import Header from "../header";
 
 export default function ContactUs() {
   return (
     <div>
+      <Header></Header>
       <ul>
         <li>
           Contact : Walmart's transfer agent: Computershare (1-800-438-6278)

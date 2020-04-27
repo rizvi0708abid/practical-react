@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -13,8 +14,9 @@ import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import ProductForm from "./ProductForm";
 import { Modal } from "@material-ui/core";
+
+import ProductForm from "../productForm";
 
 const modal = {
   width: 600,
@@ -62,6 +64,12 @@ const cardStyle = {
 export default function ProductCard(props) {
   const classes = useStyles();
   const [showForm, setShowForm] = useState(false);
+  const loading = useSelector((state) => {
+    console.log(state);
+    return state.searchedProductReducer.loading;
+  });
+
+  useEffect(() => {}, [props]);
   const {
     productId,
     productImage,
@@ -72,7 +80,8 @@ export default function ProductCard(props) {
     price,
     inStock,
   } = props.prodDetails;
-  console.log("ProductCard....::", props);
+
+  console.log("ProductCard....::", props.propDetails);
 
   const handler = () => {
     setShowForm(false);
@@ -82,6 +91,8 @@ export default function ProductCard(props) {
     <Modal open={showForm} style={modal}>
       <ProductForm id={productId} showFormHandler={handler} />
     </Modal>
+  ) : loading ? (
+    "Loading"
   ) : (
     <Grid item xs={12} sm={4}>
       <Card style={cardStyle} className={classes.root}>
@@ -92,11 +103,14 @@ export default function ProductCard(props) {
           }}
         />
 
-        <Link to={`/home/${productId}`} style={{ textDecoration: "none" }}>
+        <Link
+          to={`/app/products/${productId}`}
+          style={{ textDecoration: "none" }}
+        >
           <CardHeader
             avatar={
               <Avatar aria-label="recipe" className={classes.avatar}>
-                {productName.substring(0, 2)}
+                {productName ? productName.substring(0, 2) : ""}
               </Avatar>
             }
             title={props.prodDetails.productName}
