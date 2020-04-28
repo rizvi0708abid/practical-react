@@ -21,9 +21,15 @@ export const fetchSearchedProductsfromApi = async (
     console.log(
       `https://mobile-tha-server-8ba57.firebaseapp.com/walmartproducts/${pageNumber}/${pageSize}?search=${search}`
     );
-    const response = await fetch(
-      `https://mobile-tha-server-8ba57.firebaseapp.com/walmartproducts/${pageNumber}/${pageSize}?search=${search}`
-    );
+    let url = "";
+
+    if (search.includes("&") || search.includes("?")) {
+      url = `https://mobile-tha-server-8ba57.firebaseapp.com/walmartproducts/${pageNumber}/${pageSize}${search}`;
+    } else {
+      url = `https://mobile-tha-server-8ba57.firebaseapp.com/walmartproducts/${pageNumber}/${pageSize}?search=${search}`;
+    }
+
+    const response = await fetch(url);
     const products = await response.json();
     return products;
   } catch (e) {

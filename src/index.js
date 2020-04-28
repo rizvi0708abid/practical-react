@@ -5,6 +5,7 @@ import App from "./App";
 import LoginPage from "./components/loginPage";
 import ContactUs from "./components/contactUs";
 import ProductDetails from "./components/productDetails";
+import SearchedProductDetails from "./components/productDetails/SearchedProductDetails";
 import Home from "./components/home";
 
 import * as serviceWorker from "./serviceWorker";
@@ -21,6 +22,11 @@ ReactDOM.render(
           <Route exact path="/" component={LoginPage} />
           <ProtectedRoutes exact path="/app" component={App} />
           <ProtectedRoutes exact path="/app/products" component={Home} />
+          <ProtectedRoutes
+            exact
+            path="/app/:id"
+            component={SearchedProductDetails}
+          />
           <ProtectedRoutes
             exact
             path="/app/products/:id"

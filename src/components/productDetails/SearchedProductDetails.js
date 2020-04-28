@@ -8,9 +8,9 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
+import Header from "../header";
 
 import OutOfStock from "../../../src/images/outOfStock.jpeg";
-import Header from "../header";
 
 const listStyle = {
   listStyleType: "none",
@@ -37,10 +37,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProductDetails({ product, history }) {
+function SearchedProductDetails({ product, history }) {
   const classes = useStyles();
-  if (product === undefined)
-    return <Link to="/app/products">Go to products</Link>;
+  if (product === undefined) return <Link to="/app">Go to products</Link>;
   console.log("history....::", history);
   const {
     productId,
@@ -128,7 +127,7 @@ function ProductDetails({ product, history }) {
           </Grid>
           <button
             style={{ marginLeft: 385 }}
-            onClick={() => history.push("/app/products")}
+            onClick={() => history.push("/app")}
           >{`<<Back`}</button>
         </Paper>
       </div>
@@ -138,11 +137,11 @@ function ProductDetails({ product, history }) {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    product: _.find(state.productReducer.products.products, {
+    product: _.find(state.searchedProductReducer.products.products, {
       productId: ownProps.match.params.id,
     }),
     history: ownProps.history,
   };
 };
 
-export default connect(mapStateToProps)(ProductDetails);
+export default connect(mapStateToProps)(SearchedProductDetails);

@@ -3,8 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import Filter from "./searchFilters";
 import { requestSearchedProducts } from "../../actions/actions";
 import Skeleton from "@material-ui/lab/Skeleton";
-import ProductCard from "../card";
+import SearchedProductCard from "../card/SearchedProductCard";
+import SearchedProductForm from "../productForm/SearchedProductForm";
 import Grid from "@material-ui/core/Grid";
+
+import "./searchBar.css";
 
 const searchStyle = {
   width: "80%",
@@ -15,6 +18,7 @@ const searchStyle = {
 const SearchBar = () => {
   const [activePrev, setActivePrev] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [filters, setFilters] = useState({});
   const [search, setSearch] = useState("");
 
   const loading = useSelector((state) => {
@@ -70,11 +74,57 @@ const SearchBar = () => {
     this.setState({ showForm: dataFromChild });
   };
 
+  const getFiltersCallback = (data) => {
+    let filterString = "?";
+    console.log("dataFromFilterComponents......", data);
+    setFilters({ ...filters, data });
+    if (data && data !== undefined) {
+      if (data.inStock !== "") {
+        filterString = filterString.concat("inStock=" + data.inStock);
+      }
+      if (data.minPrice !== "" && data.minPrice !== "0") {
+        filterString = filterString.concat("&minPrice=" + data.minPrice);
+      }
+      if (data.maxPrice !== "" && data.maxPrice !== "0") {
+        filterString = filterString.concat("&maxPrice=" + data.maxPrice);
+      }
+      if (data.minReviewRating !== "" && data.minReviewRating !== "0") {
+        filterString = filterString.concat(
+          "&minReviewRating=" + data.minReviewRating
+        );
+      }
+      if (data.maxReviewRating !== "" && data.minReviewRating !== "0") {
+        filterString = filterString.concat("&minPrice=" + data.minPrice);
+      }
+      if (data.maxReviewRating !== "" && data.maxReviewRating !== "0") {
+        filterString = filterString.concat(
+          "&maxReviewRating=" + data.maxReviewRating
+        );
+      }
+      if (data.maxReviewCount !== "" && data.maxReviewCount !== "0") {
+        filterString = filterString.concat(
+          "&maxReviewCount=" + data.maxReviewCount
+        );
+      }
+      if (data.minReviewCount !== "" && data.minReviewCount !== "0") {
+        filterString = filterString.concat(
+          "&minReviewCount=" + data.minReviewCount
+        );
+      }
+    }
+    console.log("final filter string ...", filterString);
+    dispatch(requestSearchedProducts(1, pageSize, filterString));
+  };
+
   const showProducts = (product) => {
     return product === undefined ? (
       <Skeleton variant="text" width={710} height={218} />
     ) : (
-      <ProductCard key={product.productId} prodDetails={product} />
+      <SearchedProductCard
+        key={product.productId}
+        prodDetails={product}
+        callBack={myCallBack}
+      />
     );
   };
 
@@ -103,7 +153,7 @@ const SearchBar = () => {
             paddingLeft: 10,
           }}
         >
-          {<Filter searchFilter={search} />}
+          {<Filter searchFilter={search} filtersFunc={getFiltersCallback} />}
         </div>
 
         <div
@@ -116,6 +166,7 @@ const SearchBar = () => {
         >
           {!loading ? (
             <div style={{ padding: 100 }}>
+              {showForm ? <SearchedProductForm /> : null}
               <Grid
                 container
                 spacing={1}
@@ -126,6 +177,8 @@ const SearchBar = () => {
               >
                 {products === undefined
                   ? "Loading"
+                  : products.length === 0
+                  ? "No products found..."
                   : products.map((product) => showProducts(product))}
               </Grid>
             </div>
